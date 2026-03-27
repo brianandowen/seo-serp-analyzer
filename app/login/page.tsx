@@ -1,43 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   async function handleLogin() {
-  setLoading(true);
-  setError("");
+    setLoading(true);
+    setError("");
 
-  try {
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.error || "登入失敗");
-      return;
+      if (!res.ok) {
+        setError(data.error || "登入失敗");
+        return;
+      }
+
+      window.location.href = "/";
+    } catch {
+      setError("登入失敗");
+    } finally {
+      setLoading(false);
     }
-
-    window.location.href = "/";
-  } catch (error) {
-    console.error("LOGIN PAGE ERROR:", error);
-    setError("登入失敗");
-  } finally {
-    setLoading(false);
   }
-}
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

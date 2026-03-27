@@ -16,9 +16,10 @@ export function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = req.cookies.get("token")?.value;
+  const auth = req.cookies.get("auth")?.value;
 
-  if (!token) {
+  // 沒登入就擋回 login
+  if (auth !== "true") {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
