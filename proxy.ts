@@ -9,7 +9,7 @@ function isPublicPath(pathname: string) {
   );
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (isPublicPath(pathname)) {
@@ -22,7 +22,6 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // 只要有 token 就先放行
   return NextResponse.next();
 }
 
